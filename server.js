@@ -1,23 +1,36 @@
-/*PROCESS.ENV*/
-require("dotenv").config();
-
 /*LIBS*/
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
-const path = require("path");
-
-/*USER LIBS*/
-const transporter = require("./lib/nodemailer");
-
-/*HELPERS*/
-const getOrderNumber = require("./helpers/get-order-number");
+const nodemailer = require("nodemailer");
+const smtpTransport = require("nodemailer-smtp-transport");
 
 /*-------------------------------------------------------------*/
 
 /*CONSTS*/
 const app = express();
 
+/*helpers*/
+const getOrderNumber = () => {
+  return `${("00" + new Date().getUTCDate()).slice(-2)}${(
+    "00" + new Date().getUTCMonth()
+  ).slice(-2)}-${String(new Date())
+    .match(/-?\d/g)
+    .map(Number)
+    .splice(7, 5)
+    .join("")}`;
+};
+
+/*nodemailer*/
+const transporter = nodemailer.createTransport(
+  smtpTransport({
+    service: "gmail",
+    auth: {
+      user: "copyshop.online@gmail.com",
+      pass: "vrwusrojewfthoiq",
+    },
+  })
+);
 /*multer*/
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -41,8 +54,6 @@ app.use(cors());
 /*START SERVER*/
 const server = app.listen(app.get("port"), () => {
   const port = server.address().port;
-  console.log(`Email: ${process.env.EMAIL_USER}`);
-  console.log(`Password: ${process.env.EMAIL_PASSWORD}`);
   console.log("\nServer started on port: " + port);
 });
 
@@ -56,8 +67,8 @@ app.post("/send-email", async (req, res) => {
   console.log(`\nDealing with request...\nEmail: ${email2}\nNumber: ${number}`);
 
   const mailOptions = {
-    from: process.env.EMAIL_USER, // sender address
-    to: process.env.EMAIL_ROOT, // list of receivers
+    from: "copyshop.online@gmail.com", // sender address
+    to: "muzychukserhii@gmail.com", // list of receivers
     subject: `Заявка з сайту №${number}`, // Subject line
     html: `
           <div style="padding: 24px; width: calc(100% - 48px);">
@@ -95,8 +106,8 @@ app.post("/call-me", async (req, res) => {
   );
 
   const mailOptions = {
-    from: process.env.EMAIL_USER, // sender address
-    to: process.env.EMAIL_ROOT, // list of receivers
+    from: "copyshop.online@gmail.com", // sender address
+    to: "muzychukserhii@gmail.com", // list of receivers
     subject: `Заявка з сайту №${number}`, // Subject line
     html: `
           <div style="padding: 24px; width: calc(100% - 48px);">
