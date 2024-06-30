@@ -25,6 +25,7 @@ const getOrderNumber = () => {
 const transporter = nodemailer.createTransport(
   smtpTransport({
     service: "gmail",
+    secure: true,
     auth: {
       user: "copyshop.online@gmail.com",
       pass: "vrwusrojewfthoiq",
