@@ -25,7 +25,6 @@ const getOrderNumber = () => {
 const transporter = nodemailer.createTransport(
   smtpTransport({
     service: "gmail",
-    secure: true,
     auth: {
       user: "copyshop.online@gmail.com",
       pass: "vrwusrojewfthoiq",
@@ -80,7 +79,7 @@ app.post("/send-email", async (req, res) => {
             </div>
             <div style="border: 1px solid #212121; padding: 24px;"><strong>Повідомлення: </strong>${message}</div>
             <div style="border: 1px solid #212121; padding: 24px;"><strong>Файл: </strong><a href=${filePath}>${
-      filePath || "Файл выдсутній"
+      filePath || "Файл відсутній"
     }</a></div>
           </div>
             `,
