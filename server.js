@@ -2,7 +2,12 @@
 const express = require("express");
 const cors = require("cors");
 const upload = require("./lib/multer");
-const { sendMailRoute, callMeRoute, uploadRoute } = require("./routes");
+const {
+  sendMailRoute,
+  callMeRoute,
+  uploadRoute,
+  orderRoute,
+} = require("./routes");
 
 /*-------------------------------------------------------------*/
 
@@ -32,6 +37,11 @@ app.post("/send-email", async (req, res) => {
 /*call-me*/
 app.post("/call-me", async (req, res) => {
   callMeRoute(req, res);
+});
+
+/*order*/
+app.post("/order", async (req, res) => {
+  orderRoute(req, res);
 });
 
 /*upload*/
