@@ -1,6 +1,6 @@
 const transporter = {
-  from: "Copy Shop Site <mailtrap@demomailtrap.com>",
-  to: "muzychukserhii@gmail.com",
+  from: "Copy Shop Site <order@site.copy-shop.ua>",
+  to: "sale@copy-shop.ua",
   setSubject: (route, number) => {
     return `${subjects[route]}${number}`;
   },
