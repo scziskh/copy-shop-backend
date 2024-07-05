@@ -767,7 +767,7 @@ margin-left: 47px !important;
         : "Адреса:"
     } ${
       data["shipping-type"] === "pickup"
-        ? "АДРЕСА ВІДДІЛЕННЯ"
+        ? translation[data.shipping]
         : data["shipping-address"]
     }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Платник: ${
       translation[data.payment]
@@ -809,13 +809,15 @@ margin-left: 47px !important;
       </td>
   </tr><tr>
   <td align="left" class="esd-block-html">
-    <ul class="esd-text">${Object.entries(item.params).map(([name, value]) => {
-      return `<li>${
-        name === "COUNT"
-          ? `${translation[name].header} ${value}`
-          : `${translation[name].header} ${translation[name][value]}`
-      }</li>`;
-    })}</ul></td>
+    <ul class="esd-text">${Object.entries(item.params)
+      .map(([name, value]) => {
+        return `<li>${
+          name === "COUNT"
+            ? `${translation[name].header} ${value}`
+            : `${translation[name].header} ${translation[name][value]}`
+        }</li>`;
+      })
+      .join("")}</ul></td>
 </tr>
 ${
   item.filePath
