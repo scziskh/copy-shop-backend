@@ -1,5 +1,4 @@
 const transporter = require("../lib/transporter");
-const configs = require("../configs");
 const { getOrderNumber, setMailOptions } = require("../helpers");
 
 const sendMailRoute = async (req, res) => {

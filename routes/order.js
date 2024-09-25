@@ -7,6 +7,7 @@ const orderRoute = async (req, res) => {
   const data = await req.body;
 
   console.log(`\nDealing with request...\n\nNumber: ${number}`);
+  console.log(data.cartItems[0].params);
 
   try {
     transporter.sendMail(setMailOptions(route, data, number), (err, info) => {
@@ -21,7 +22,7 @@ const orderRoute = async (req, res) => {
   } catch (error) {
     console.log("ERROR:");
     console.error(error);
-    return res.status(500).json({ message: "500" });
+    return res.status(500).json({ message: "500", error });
   }
 };
 

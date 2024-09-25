@@ -1,6 +1,6 @@
 const transporter = {
   from: "Copy Shop Site <order@site.copy-shop.ua>",
-  to: "sale@copy-shop.ua",
+  to: "muzychukserhii@gmail.com",
   setSubject: (route, number) => {
     return `${subjects[route]}${number}`;
   },
@@ -813,8 +813,10 @@ margin-left: 47px !important;
       .map(([name, value]) => {
         return `<li>${
           name === "COUNT"
-            ? `${translation[name].header} ${value}`
-            : `${translation[name].header} ${translation[name][value]}`
+            ? `${translation[name]?.header ?? "-"} ${value}`
+            : `${translation[name]?.header ?? "-"} ${
+                translation[name]?.[value] ?? "-"
+              }`
         }</li>`;
       })
       .join("")}</ul></td>

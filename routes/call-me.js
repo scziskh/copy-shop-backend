@@ -1,4 +1,3 @@
-const configs = require("../configs");
 const { getOrderNumber, setMailOptions } = require("../helpers");
 const transporter = require("../lib/transporter");
 
