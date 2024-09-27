@@ -1,6 +1,6 @@
 const transporter = {
   from: "Copy Shop Site <order@site.copy-shop.ua>",
-  to: "muzychukserhii@gmail.com",
+  to: "sale@copy-shop.ua",
   setSubject: (route, number) => {
     return `${subjects[route]}${number}`;
   },
@@ -40,6 +40,57 @@ const translation = {
     A5: "A5 (210x148)",
     A4: "A4 (297x210)",
     A3: "A3 (420x297)",
+  },
+  MATERIAL: {
+    header: "Матеріал:",
+    FILM: "Плівка",
+    PAPER: "Папір",
+  },
+  COVER: {
+    header: "Обкладинка:",
+  },
+  INER: {
+    header: "Внутрішній блок:",
+  },
+  PAGES: {
+    header: "Кількість сторінок:",
+  },
+  BINDING: {
+    header: "Сшивання:",
+    PLASTIC_SPRING: "Пластикова пружина",
+    METAL_SPRING: "Металева пружина",
+  },
+  FORM: {
+    header: "Форма",
+    SQUARE: "Прямокутні",
+    ROUND: "Круглі",
+  },
+  WIDTH: {
+    header: "Ширина",
+  },
+  HEIGHT: {
+    header: "Висота",
+  },
+
+  WIDE_PAPER: {
+    header: "Папір:",
+    140: "Фотопапір 140",
+    150: "CityLight 150",
+    180: "Фотопапір 180",
+    BANNER_510: "Банер литий 510г",
+    BANNER_440: "Банер ламынований 440г",
+  },
+  LUVERS: {
+    header: "Люверси",
+    NO_LUVERS: "Без люверсів",
+    LINEAR: "По вcій довжині",
+    CORNER: "По кутам",
+  },
+  BOX: {
+    header: "Бокс для батарейок:",
+    160: "160х300 мм",
+    200: "200х400 мм",
+    250: "250х720 мм",
   },
   PAPER: {
     header: "Папір:",
@@ -811,13 +862,24 @@ margin-left: 47px !important;
   <td align="left" class="esd-block-html">
     <ul class="esd-text">${Object.entries(item.params)
       .map(([name, value]) => {
-        return `<li>${
-          name === "COUNT"
-            ? `${translation[name]?.header ?? "-"} ${value}`
-            : `${translation[name]?.header ?? "-"} ${
-                translation[name]?.[value] ?? "-"
-              }`
-        }</li>`;
+        return name !== "file"
+          ? `<li>${
+              typeof value !== "object"
+                ? `${translation[name]?.header ?? name} ${
+                    translation[name]?.[value] ?? value
+                  }`
+                : (translation[name]?.header ?? name) +
+                  (value.PAPER !== "NO_PAPER"
+                    ? `<ul>${Object.entries(value)
+                        .map(([name, value]) => {
+                          return `<li> ${`${
+                            translation[name]?.header ?? name
+                          } ${translation[name]?.[value] ?? value}`}</li>`;
+                        })
+                        .join("")}</ul>`
+                    : " —")
+            }</li>`
+          : "";
       })
       .join("")}</ul></td>
 </tr>
