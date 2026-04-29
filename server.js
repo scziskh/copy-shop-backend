@@ -51,6 +51,13 @@ app.get("/status", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+app.get("*", (req, res) => {
+  res.json({
+    message: "Ви потрапили на сервер, але роут не знайдено",
+    requestedUrl: req.url,
+    originalUrl: req.originalUrl,
+  });
+});
 
 const server = app.listen(app.get("port"), () => {
   console.log("\nServer started on port: " + PORT);
