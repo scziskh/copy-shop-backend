@@ -1,9 +1,6 @@
-"use client"; // Це не потрібно в Node.js сервері, можна видалити
-
+/*LIBS*/
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-
 const upload = require("./lib/multer");
 const {
   sendMailRoute,
@@ -12,16 +9,47 @@ const {
   orderRoute,
 } = require("./routes");
 
+/*-------------------------------------------------------------*/
+
+/*CONSTS*/
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+const PORT = 443;
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+/*SERVER CONFIG*/
+app.set("port", PORT);
+app.use("/uploads", express.static("uploads"));
+app.use(express.json());
 app.use(cors());
 
+/*START SERVER*/
+const server = app.listen(app.get("port"), () => {
+  const port = server.address().port;
+  console.log("\nServer started on port: " + port);
+});
+
+/*-----------------------POSTS----------------------------------*/
+/*send-email*/
+app.post("/send-email", async (req, res) => {
+  sendMailRoute(req, res);
+});
+
+/*call-me*/
+app.post("/call-me", async (req, res) => {
+  callMeRoute(req, res);
+});
+
+/*order*/
+app.post("/order", async (req, res) => {
+  orderRoute(req, res);
+});
+
+/*upload*/
+app.post("/upload", upload.single("file"), async (req, res) => {
+  uploadRoute(req, res);
+});
+
+/*-----------------------GET----------------------------------*/
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Copy Shop API is working",
@@ -29,47 +57,3 @@ app.get("/", (req, res) => {
     uptime: process.uptime().toFixed(2) + "s",
   });
 });
-
-app.post(
-  "/upload",
-  (req, res, next) => {
-    upload.single("file")(req, res, (err) => {
-      if (err) {
-        console.error("Multer Error:", err.message);
-        return res.status(400).json({ error: err.message });
-      }
-      next();
-    });
-  },
-  async (req, res) => {
-    uploadRoute(req, res);
-  },
-);
-
-app.post("/send-email", sendMailRoute);
-app.post("/call-me", callMeRoute);
-app.post("/order", orderRoute);
-
-app.get("/status", (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "Server is running",
-    uptime: process.uptime().toFixed(2) + " seconds",
-    timestamp: new Date().toISOString(),
-  });
-});
-
-app.get("*", (req, res) => {
-  res.json({
-    message: "Ви потрапили на сервер, але роут не знайдено (404)",
-    requestedUrl: req.url,
-    originalUrl: req.originalUrl,
-    method: req.method,
-  });
-});
-
-const server = app.listen(PORT, () => {
-  console.log("\nServer started on port: " + PORT);
-});
-
-server.timeout = 300000;

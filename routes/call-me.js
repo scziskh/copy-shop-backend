@@ -4,28 +4,26 @@ const transporter = require("../lib/transporter");
 const callMe = async (req, res) => {
   const number = getOrderNumber();
   const route = "callMe";
-  const data = req.body;
+  const data = await req.body;
 
-  console.log(`[Request: ${route}] | Number: ${number} | Data:`, data);
+  console.log(
+    `\nDealing with request ${route}\nNumber: ${number}\nData: ${data}`,
+  );
 
   try {
-    const info = await transporter.sendMail(
-      setMailOptions(route, data, number),
-    );
-
-    console.log(`[Success: ${route}] Email sent:`, info.messageId);
-
-    return res.status(200).json({
-      message: "OK",
-      number,
+    transporter.sendMail(setMailOptions(route, data, number), (err, info) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "500", err });
+      } else {
+        console.log(info);
+        return res.json({ message: "OK", number });
+      }
     });
   } catch (error) {
-    console.error(`[Error: ${route}] Detail:`, error);
-
-    return res.status(500).json({
-      message: "Internal Server Error",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
+    console.log("ERROR:");
+    console.error(error);
+    return res.status(500).json({ message: "500" });
   }
 };
 

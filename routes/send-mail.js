@@ -4,26 +4,26 @@ const { getOrderNumber, setMailOptions } = require("../helpers");
 const sendMailRoute = async (req, res) => {
   const number = getOrderNumber();
   const route = "sendMail";
-  const data = req.body;
+  const data = await req.body;
 
-  console.log(`[Request: ${route}] | ID: ${number}`);
-  console.log("Payload:", data);
+  console.log(
+    `\nDealing with request ${route}\nNumber: ${number}\nData: ${data}`,
+  );
+
   try {
-    const info = await transporter.sendMail(
-      setMailOptions(route, data, number),
-    );
-
-    console.log(`[Success: ${route}] Sent: ${info.messageId}`);
-    return res.status(200).json({
-      message: "OK",
-      number,
+    transporter.sendMail(setMailOptions(route, data, number), (err, info) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "500", err });
+      } else {
+        console.log(info);
+        return res.json({ message: "OK", number });
+      }
     });
   } catch (error) {
-    console.error(`[Error: ${route}] Full report:`, error);
-    return res.status(500).json({
-      message: "500",
-      status: "error",
-    });
+    console.log("ERROR:");
+    console.error(error);
+    return res.status(500).json({ message: "500" });
   }
 };
 
