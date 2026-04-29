@@ -9,7 +9,7 @@ const {
 } = require("./routes");
 
 const app = express();
-const PORT = 443;
+const PORT = 3000;
 
 app.set("port", PORT);
 
