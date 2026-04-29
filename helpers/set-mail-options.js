@@ -1,11 +1,25 @@
 const configs = require("../configs");
 
+/**
+ * Формує об'єкт налаштувань для відправки листа через Nodemailer
+ * @param {string} route
+ * @param {object} data
+ * @param {string|number} number -
+ */
 const setMailOptions = (route, data, number) => {
+  const { from, to, setSubject, setHtml } = configs.transporter;
+
+  if (!setSubject || !setHtml) {
+    throw new Error(
+      `[MailOptions Error]: Formatting methods are missing for route ${route}`,
+    );
+  }
+
   return {
-    from: configs.transporter.from,
-    to: configs.transporter.to,
-    subject: configs.transporter.setSubject(route, number),
-    html: configs.transporter.setHtml(route, data, number),
+    from,
+    to,
+    subject: setSubject(route, number),
+    html: setHtml(route, data, number),
   };
 };
 

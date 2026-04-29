@@ -1,11 +1,13 @@
 const getOrderNumber = () => {
-  return `${("00" + new Date().getUTCDate()).slice(-2)}${(
-    "00" + new Date().getUTCMonth()
-  ).slice(-2)}-${String(new Date())
-    .match(/-?\d/g)
-    .map(Number)
-    .splice(7, 5)
-    .join("")}`;
+  const now = new Date();
+
+  const day = String(now.getUTCDate()).padStart(2, "0");
+
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+
+  const suffix = String(now.getTime()).slice(-5);
+
+  return `${day}${month}-${suffix}`;
 };
 
 module.exports = getOrderNumber;
