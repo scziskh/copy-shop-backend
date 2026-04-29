@@ -39,6 +39,18 @@ app.post("/send-email", sendMailRoute);
 app.post("/call-me", callMeRoute);
 app.post("/order", orderRoute);
 
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
+app.get("/status", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Server is running",
+    uptime: process.uptime().toFixed(2) + " seconds",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 const server = app.listen(app.get("port"), () => {
   console.log("\nServer started on port: " + PORT);
 });
