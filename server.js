@@ -17,7 +17,7 @@ app.set("port", PORT);
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads/?", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
 
 app.post(
@@ -36,14 +36,14 @@ app.post(
   },
 );
 
-app.post("/send-email", sendMailRoute);
-app.post("/call-me", callMeRoute);
-app.post("/order", orderRoute);
+app.post("/send-email/?", sendMailRoute);
+app.post("/call-me/?", callMeRoute);
+app.post("/order/?", orderRoute);
 
-app.get("/ping", (req, res) => {
+app.get("/ping/?", (req, res) => {
   res.status(200).send("pong");
 });
-app.get("/status", (req, res) => {
+app.get("/status/?", (req, res) => {
   res.status(200).json({
     status: "ok",
     message: "Server is running",
