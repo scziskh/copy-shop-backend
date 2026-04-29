@@ -35,14 +35,14 @@ app.post(
   },
 );
 
-app.post("/send-email/", sendMailRoute);
-app.post("/call-me/", callMeRoute);
-app.post("/order/", orderRoute);
+app.post("/send-email", sendMailRoute);
+app.post("/call-me", callMeRoute);
+app.post("/order", orderRoute);
 
-app.get("/ping/", (req, res) => {
+app.get("/ping", (req, res) => {
   res.status(200).send("pong");
 });
-app.get("/status/", (req, res) => {
+app.get("/status", (req, res) => {
   res.status(200).json({
     status: "ok",
     message: "Server is running",
