@@ -1,5 +1,5 @@
 const server = {
-  PORT: 443,
+  PORT: 3000,
 };
 
 module.exports = server;
