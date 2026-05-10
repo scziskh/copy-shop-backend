@@ -72,7 +72,7 @@ const getPricingFlat = async (req, res) => {
 
 // Масове оновлення змінених цін
 const updatePricing = async (req, res) => {
-  const { updates } = req.body; // Очікуємо масив: [{ id: 1, price: 15.5 }, ...]
+  const { updates } = req.body;
 
   if (!updates || !Array.isArray(updates)) {
     return res.status(400).json({ error: "Неправильний формат даних" });
@@ -80,20 +80,17 @@ const updatePricing = async (req, res) => {
 
   try {
     const client = await pool.connect();
-
-    // Використовуємо транзакцію: якщо одна ціна не оновиться, скасуються всі
     await client.query("BEGIN");
 
     for (const item of updates) {
-      await client.query("UPDATE print_prices SET price = $1 WHERE id = $2", [
-        item.price,
-        item.id,
-      ]);
+      await client.query(
+        "UPDATE print_prices SET price = $1, exchange_rate = $2 WHERE id = $3",
+        [item.price, item.exchange_rate, item.id],
+      );
     }
 
     await client.query("COMMIT");
     client.release();
-
     return res.status(200).json({ message: "Ціни успішно оновлено!" });
   } catch (error) {
     console.error("Помилка оновлення цін:", error);
