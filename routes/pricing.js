@@ -51,4 +51,59 @@ const getPricing = async (req, res) => {
   }
 };
 
-module.exports = getPricing;
+// routes/pricing.js
+// (Верхню частину з const { Pool } та getPricing залишаємо без змін)
+
+// Отримання плоского масиву для таблиці адмінки
+const getPricingFlat = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    // Витягуємо id, path, qty та price
+    const { rows } = await client.query(
+      "SELECT id, path, qty, price FROM print_prices ORDER BY path ASC, qty ASC NULLS FIRST",
+    );
+    client.release();
+    return res.status(200).json(rows);
+  } catch (error) {
+    console.error("Помилка отримання списку цін:", error);
+    return res.status(500).json({ error: "Помилка сервера" });
+  }
+};
+
+// Масове оновлення змінених цін
+const updatePricing = async (req, res) => {
+  const { updates } = req.body; // Очікуємо масив: [{ id: 1, price: 15.5 }, ...]
+
+  if (!updates || !Array.isArray(updates)) {
+    return res.status(400).json({ error: "Неправильний формат даних" });
+  }
+
+  try {
+    const client = await pool.connect();
+
+    // Використовуємо транзакцію: якщо одна ціна не оновиться, скасуються всі
+    await client.query("BEGIN");
+
+    for (const item of updates) {
+      await client.query("UPDATE print_prices SET price = $1 WHERE id = $2", [
+        item.price,
+        item.id,
+      ]);
+    }
+
+    await client.query("COMMIT");
+    client.release();
+
+    return res.status(200).json({ message: "Ціни успішно оновлено!" });
+  } catch (error) {
+    console.error("Помилка оновлення цін:", error);
+    // Скасовуємо транзакцію у разі помилки
+    const client = await pool.connect();
+    await client.query("ROLLBACK");
+    client.release();
+    return res.status(500).json({ error: "Не вдалося оновити ціни" });
+  }
+};
+
+// Додаємо нові функції в експорт
+module.exports = { getPricing, getPricingFlat, updatePricing };

@@ -2,7 +2,7 @@ const callMeRoute = require("./call-me");
 const orderRoute = require("./order");
 const sendMailRoute = require("./send-mail");
 const uploadRoute = require("./upload");
-const getPricing = require("./pricing");
+const { getPricing, getPricingFlat, updatePricing } = require("./pricing");
 
 module.exports = {
   callMeRoute,
@@ -10,4 +10,6 @@ module.exports = {
   orderRoute,
   uploadRoute,
   getPricing,
+  getPricingFlat,
+  updatePricing,
 };

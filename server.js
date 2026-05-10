@@ -10,6 +10,8 @@ const {
   uploadRoute,
   orderRoute,
   getPricing,
+  getPricingFlat,
+  updatePricing,
 } = require("./routes");
 
 /*-------------------------------------------------------------*/
@@ -58,10 +60,20 @@ app.get("/pricing", async (req, res) => {
   getPricing(req, res);
 });
 
+app.get("/pricing-flat", async (req, res) => {
+  getPricingFlat(req, res);
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Copy Shop API is working",
     node_version: process.version,
     uptime: process.uptime().toFixed(2) + "s",
   });
+});
+
+/*-----------------------PUT----------------------------------*/
+// Роут для збереження нових цін
+app.put("/pricing", async (req, res) => {
+  updatePricing(req, res);
 });
