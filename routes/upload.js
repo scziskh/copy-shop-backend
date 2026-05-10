@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     }
 
     const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: "copy-shop-uploads" }, // папка в Cloudinary
+      { folder: "copy-shop-uploads" },
       (error, result) => {
         if (error) {
           console.error("Cloudinary Error:", error);

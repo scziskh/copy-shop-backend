@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 /*LIBS*/
 const express = require("express");
 const cors = require("cors");
@@ -7,6 +9,7 @@ const {
   callMeRoute,
   uploadRoute,
   orderRoute,
+  getPricing,
 } = require("./routes");
 
 /*-------------------------------------------------------------*/
@@ -50,6 +53,11 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 /*-----------------------GET----------------------------------*/
+/*get full pricing JSON*/
+app.get("/pricing", async (req, res) => {
+  getPricing(req, res);
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Copy Shop API is working",
