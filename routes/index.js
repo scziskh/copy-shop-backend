@@ -3,6 +3,7 @@ const orderRoute = require("./order");
 const sendMailRoute = require("./send-mail");
 const uploadRoute = require("./upload");
 const { getPricing, getPricingFlat, updatePricing } = require("./pricing");
+const loginRoute = require("./login");
 
 module.exports = {
   callMeRoute,
@@ -12,4 +13,5 @@ module.exports = {
   getPricing,
   getPricingFlat,
   updatePricing,
+  loginRoute,
 };
