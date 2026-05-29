@@ -58,7 +58,7 @@ const html = {
           <ul style="padding-left:20px; color:#555;">
             ${Object.entries(item.params)
               .map(([key, val]) =>
-                typeof val !== "object" ? `<li><b>${key}:</b> ${val}</li>` : "",
+                typeof val !== "object" ? `<li><b>${key}</b> ${val}</li>` : "",
               )
               .join("")}
           </ul>
