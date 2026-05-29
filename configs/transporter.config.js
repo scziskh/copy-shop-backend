@@ -36,10 +36,11 @@ const renderFiles = (filePaths) => {
 const itemStyle = `border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:15px; background:#fff;`;
 
 const html = {
-  sendMail: ({ email2, name, message, filePaths }, number) => `
+  sendMail: ({ email2, name, message, filePaths, fullUrl }, number) => `
     <div style="font-family:sans-serif; max-width:600px; margin:auto; padding:20px;">
       <h2 style="color:#333;">Нове повідомлення №${number}</h2>
       <p><b>Від:</b> ${name} (${email2})</p>
+      <p><b>Відправлено зі сторінки:</b> <a href="${fullUrl}">${fullUrl}</a></p>
       <p style="line-height:1.5;">${message}</p>
       ${renderFiles(filePaths)}
     </div>`,
