@@ -1,6 +1,6 @@
 const transporter = {
   from: "Copy Shop Site <order@site.copy-shop.ua>",
-  to: "muzychukserhii@gmail.com",
+  to: "sale@copy-shop.ua",
   setSubject: (route, number) => `${subjects[route]}${number}`,
   setHtml: (route, data, number) => html[route](data, number),
 };
