@@ -1,6 +1,6 @@
 const transporter = {
   from: "Copy Shop Site <order@site.copy-shop.ua>",
-  to: "sale@copy-shop.ua",
+  to: "muzychukserhii@gmail.com",
   setSubject: (route, number) => {
     return `${subjects[route]}${number}`;
   },
@@ -186,7 +186,7 @@ const translation = {
 const html = {
   sendMail: (
     { email2, name, message, filePath },
-    number
+    number,
   ) => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
@@ -796,33 +796,33 @@ margin-left: 47px !important;
 				<v:fill type="tile" color="#fafafa"></v:fill>
 			</v:background>
 		<![endif]--><table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td class="esd-email-paddings" valign="top"><table cellpadding="0" cellspacing="0" class="es-content" align="center"><tbody><tr><td class="esd-stripe" align="center"><table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600"><tbody><tr><td class="esd-structure es-p15t es-p20r es-p20l" align="left"><table cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td width="560" class="esd-container-frame" align="center" valign="top"><table cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="center" class="esd-block-image es-p10t es-p5b" style="font-size: 0px;"><a target="_blank" href="https://site.copy-shop.ua/"><img src="https://res.cloudinary.com/dllc7tavb/image/upload/c_limit,w_96/f_auto/q_auto/v1//assets/logo?_a=BAVFB+DW0" alt="" style="display:block" width="100" class="adapt-img"></a></td></tr><tr><td align="center" class="esd-block-text es-p10b es-m-txt-c es-text-6456"><h1 style="font-size:24px;line-height:100%">Нове замовлення на сайті</h1><h2>На суму: ${parseFloat(
-      totalPrice
+      totalPrice,
     ).toFixed(
-      2
+      2,
     )} грн.</h2></td></tr><tr><td align="left" class="esd-block-text es-text-1889"><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Номер замовлення: ${number}</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Email: ${
       data.email2
     }</strong></p>
   <p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Телефон: ${
     data.phone
   }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Ім'я: ${
-      data["first-name"]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Прізвище: ${
-      data["last-name"]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Доставка: ${
-      translation[data["shipping-type"]]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Місто: ${
-      data["shipping-type"] === "pickup" ? "Київ" : data["shipping-city"]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>${
-      data["post-type"] === "department" && data["shipping-type"] !== "pickup"
-        ? "Номер поштомату / відділення:"
-        : "Адреса:"
-    } ${
-      data["shipping-type"] === "pickup"
-        ? translation[data.shipping]
-        : data["shipping-address"]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Платник: ${
-      translation[data.payment]
-    }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>​</strong></p></td></tr>
+    data["first-name"]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Прізвище: ${
+    data["last-name"]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Доставка: ${
+    translation[data["shipping-type"]]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Місто: ${
+    data["shipping-type"] === "pickup" ? "Київ" : data["shipping-city"]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>${
+    data["post-type"] === "department" && data["shipping-type"] !== "pickup"
+      ? "Номер поштомату / відділення:"
+      : "Адреса:"
+  } ${
+    data["shipping-type"] === "pickup"
+      ? translation[data.shipping]
+      : data["shipping-address"]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>Платник: ${
+    translation[data.payment]
+  }</strong></p><p class="es-text-mobile-size-14" style="font-size:14px;line-height:150%"><strong>​</strong></p></td></tr>
     
 
     <tr>
@@ -840,7 +840,7 @@ margin-left: 47px !important;
   
   ${cartItems.map(
     (
-      item
+      item,
     ) => `<table class="es-content" cellspacing="0" cellpadding="0" align="center">
       <tbody><tr>
           <td class="esd-stripe" align="center" bgcolor="transparent">
@@ -911,7 +911,7 @@ ${
               </tbody></table>
           </td>
       </tr>
-    </tbody></table>`
+    </tbody></table>`,
   )}
     
     
