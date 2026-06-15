@@ -12,7 +12,9 @@ const {
   getPricing,
   getPricingFlat,
   updatePricing,
-  loginRoute, // <--- ДОДАНО ІМПОРТ
+  loginRoute,
+  searchCitiesRoute,
+  getWarehousesRoute,
 } = require("./routes");
 
 /*-------------------------------------------------------------*/
@@ -55,12 +57,17 @@ app.get("/pricing-flat", async (req, res) => {
   getPricingFlat(req, res);
 });
 app.get("/", (req, res) => {
-  res
-    .status(200)
-    .json({
-      message: "Copy Shop API is working",
-      node_version: process.version,
-    });
+  res.status(200).json({
+    message: "Copy Shop API is working",
+    node_version: process.version,
+  });
+});
+
+app.post("/np/cities", async (req, res) => {
+  searchCitiesRoute(req, res);
+});
+app.post("/np/warehouses", async (req, res) => {
+  getWarehousesRoute(req, res);
 });
 
 /*-----------------------PUT----------------------------------*/

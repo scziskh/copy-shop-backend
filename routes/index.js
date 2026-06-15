@@ -4,6 +4,8 @@ const sendMailRoute = require("./send-mail");
 const uploadRoute = require("./upload");
 const { getPricing, getPricingFlat, updatePricing } = require("./pricing");
 const loginRoute = require("./login");
+const { searchCitiesRoute } = require("./get-cities");
+const { getWarehousesRoute } = require("./get-warehouse");
 
 module.exports = {
   callMeRoute,
@@ -14,4 +16,6 @@ module.exports = {
   getPricingFlat,
   updatePricing,
   loginRoute,
+  searchCitiesRoute,
+  getWarehousesRoute,
 };
