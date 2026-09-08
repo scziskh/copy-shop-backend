@@ -103,10 +103,18 @@ const html = {
       ${renderFiles(filePaths)}
     </div>`,
 
-  order: ({ data, cartItems, totalPrice }, number) => `
+  order: ({ data, cartItems, totalPrice, serviceFee }, number) => {
+    const fee = parseFloat(serviceFee || 0);
+
+    return `
     <div style="font-family:sans-serif; max-width:600px; margin:auto; padding:20px; background:#f4f4f4;">
-      <h1 style="text-align:center;">Замовлення №${number}</h1>
-      <h2 style="text-align:center;">Сума: ${parseFloat(totalPrice).toFixed(2)} грн.</h2>
+      <h1 style="text-align:center; margin-bottom:5px;">Замовлення №${number}</h1>
+      <h2 style="text-align:center; margin-top:0;">Загальна сума: ${parseFloat(totalPrice).toFixed(2)} грн.</h2>
+      ${
+        fee > 0
+          ? `<p style="text-align:center; color:#e65100; margin-top:-10px; font-weight:bold; font-size:14px;">(у т.ч. сервісний збір: ${fee.toFixed(2)} грн.)</p>`
+          : ""
+      }
       
       ${cartItems
         .map(
@@ -127,6 +135,16 @@ const html = {
         )
         .join("")}
 
+      ${
+        fee > 0
+          ? `
+        <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:15px; border:1px solid #ddd; text-align:right;">
+          <p style="margin:0; font-weight:bold; color:#e65100;">Сервісний збір: ${fee.toFixed(2)} грн.</p>
+        </div>
+      `
+          : ""
+      }
+
       <div style="background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
         <h3 style="margin-top:0; color:#333; border-bottom:1px solid #eee; padding-bottom:5px;">Дані покупця</h3>
         <p style="margin:5px 0;"><b>Ім'я:</b> ${data["first-name"]} ${data["last-name"]}</p>
@@ -136,5 +154,6 @@ const html = {
 
       ${renderShippingAndPayment(data)}
       
-    </div>`,
+    </div>`;
+  },
 };
