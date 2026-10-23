@@ -4,6 +4,22 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const upload = require("./lib/multer");
+
+/*UPLOADTHING INTEGRATION*/
+const { createRouteHandler, createUploadthing } = require("uploadthing/express");
+
+const f = createUploadthing();
+
+// Конфигурация загрузчика UploadThing
+const uploadRouter = {
+  fileUploader: f({
+    blob: { maxFileSize: "64MB", maxFileCount: 10 },
+  }).onUploadComplete(async ({ file }) => {
+    console.log("Файл успешно загружен в UploadThing:", file.url);
+    return { uploadedBy: "user" };
+  }),
+};
+
 const {
   sendMailRoute,
   callMeRoute,
@@ -19,12 +35,23 @@ const {
 
 /*-------------------------------------------------------------*/
 const app = express();
-const PORT = 443;
+const PORT = process.env.PORT || 443;
 
 app.set("port", PORT);
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cors());
+
+// Роут для UploadThing (обрабатывает загрузку файлов до 64 МБ)
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {
+      token: process.env.UPLOADTHING_TOKEN,
+    },
+  })
+);
 
 const server = app.listen(app.get("port"), () => {
   const port = server.address().port;
@@ -33,7 +60,7 @@ const server = app.listen(app.get("port"), () => {
 
 /*-----------------------POSTS----------------------------------*/
 app.post("/login", async (req, res) => {
-  loginRoute(req, res); // <--- ДОДАНО РОУТ
+  loginRoute(req, res);
 });
 
 app.post("/send-email", async (req, res) => {
