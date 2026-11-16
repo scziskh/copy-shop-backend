@@ -79,8 +79,8 @@ const updatePricing = async (req, res) => {
     return res.status(400).json({ error: "Неправильний формат даних" });
   }
 
+  const client = await pool.connect(); // Получаем клиента один раз
   try {
-    const client = await pool.connect();
     await client.query("BEGIN");
 
     for (const item of updates) {
@@ -89,15 +89,15 @@ const updatePricing = async (req, res) => {
         item.id,
       ]);
     }
+
     await client.query("COMMIT");
-    client.release();
     return res.status(200).json({ message: "Ціни успішно оновлено!" });
   } catch (error) {
-    const client = await pool.connect();
-    await client.query("ROLLBACK");
-    client.release();
+    await client.query("ROLLBACK"); // Откатываем транзакцию на ТОМ ЖЕ клиенте
     console.error("Помилка оновлення цін:", error);
     return res.status(500).json({ error: "Не вдалося оновити ціни" });
+  } finally {
+    client.release(); // Обязательно возвращаем клиента в пул в блоке finally
   }
 };
 
