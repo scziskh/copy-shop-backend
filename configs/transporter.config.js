@@ -95,14 +95,24 @@ const itemStyle = `border:1px solid #ddd; padding:15px; border-radius:8px; margi
 
 const html = {
   sendMail: (
-    { email2 = "не вказано", name, message, filePaths, fullUrl },
+    {
+      email2 = "Не вказано",
+      name = "Клієнт",
+      message = "",
+      filePaths = [],
+      fullUrl = "#",
+    },
     number,
   ) => `
-    <div style="font-family:sans-serif; max-width:600px; margin:auto; padding:20px;">
-      <h2 style="color:#333;">Нове повідомлення №${number}</h2>
+    <div style="font-family:sans-serif; max-width:600px; margin:auto; padding:20px; background:#f9f9f9; border-radius:8px;">
+      <h2 style="color:#333; border-bottom:2px solid #ddd; padding-bottom:8px;">Нова заявка з ШІ-чату №${number}</h2>
       <p><b>Від:</b> ${name} (${email2})</p>
-      <p><b>Відправлено зі сторінки:</b> <a href="${fullUrl}">${fullUrl}</a></p>
-      <p style="line-height:1.5;">${message}</p>
+      <p><b>Сторінка сайту:</b> <a href="${fullUrl}" target="_blank">${fullUrl}</a></p>
+      
+      <div style="background:#ffffff; padding:15px; border-radius:6px; border:1px solid #e0e0e0; margin-top:15px; white-space: pre-wrap; line-height:1.5; font-size:14px;">
+        ${message}
+      </div>
+
       ${renderFiles(filePaths)}
     </div>`,
 
