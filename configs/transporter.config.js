@@ -105,7 +105,7 @@ const html = {
     number,
   ) => `
     <div style="font-family:sans-serif; max-width:600px; margin:auto; padding:20px; background:#f9f9f9; border-radius:8px;">
-      <h2 style="color:#333; border-bottom:2px solid #ddd; padding-bottom:8px;">Нова заявка з ШІ-чату №${number}</h2>
+      <h2 style="color:#333; border-bottom:2px solid #ddd; padding-bottom:8px;">Нова заявка з сайту №${number}</h2>
       <p><b>Від:</b> ${name} (${email2})</p>
       <p><b>Сторінка сайту:</b> <a href="${fullUrl}" target="_blank">${fullUrl}</a></p>
       
