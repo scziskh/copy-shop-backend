@@ -6,7 +6,10 @@ const cors = require("cors");
 const upload = require("./lib/multer");
 
 /*UPLOADTHING INTEGRATION*/
-const { createRouteHandler, createUploadthing } = require("uploadthing/express");
+const {
+  createRouteHandler,
+  createUploadthing,
+} = require("uploadthing/express");
 
 const f = createUploadthing();
 
@@ -50,7 +53,7 @@ app.use(
     config: {
       token: process.env.UPLOADTHING_TOKEN,
     },
-  })
+  }),
 );
 
 const server = app.listen(app.get("port"), () => {
@@ -100,45 +103,4 @@ app.post("/np/warehouses", async (req, res) => {
 /*-----------------------PUT----------------------------------*/
 app.put("/pricing", async (req, res) => {
   updatePricing(req, res);
-});
-
-app.post("/api/ai-chat", async (req, res) => {
-  try {
-    const { locale = "uk", catalog = "", messages = [] } = req.body;
-    const langInstruction =
-      locale === "ru"
-        ? "Отвечай на русском языке."
-        : "Відповідай українською мовою.";
-
-    const systemPrompt = `Ты — консультант полиграфии Copy Shop (Киев, site.copy-shop.ua). ${langInstruction}
-Отвечай кратко и по делу. Помогай с выбором продукции, материалов и требованиями к макетам (CMYK, 300 dpi, вылеты 2-3 мм, PDF/TIFF).
-Если подходит страница из каталога ниже, дай ссылку в формате [Название](/uk/product/slug/). Не выдумывай URL.
-
-Каталог:
-${catalog}`;
-
-    const contents = messages.map((m) => ({
-      role: m.role === "model" ? "model" : "user",
-      parts: [{ text: String(m.text || "") }],
-    }));
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents,
-          generationConfig: { temperature: 0.5, maxOutputTokens: 700 },
-        }),
-      }
-    );
-
-    const data = await response.json();
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    res.json({ reply });
-  } catch (err) {
-    res.status(500).json({ error: "Gemini request failed" });
-  }
 });
